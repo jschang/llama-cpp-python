@@ -27,7 +27,7 @@ from typing import List, Literal, Union
 
 import uvicorn
 
-from llama_cpp.server.app import create_app, Settings
+from .app import create_app, Settings
 
 def get_base_type(annotation):
     if getattr(annotation, '__origin__', None) is Literal:

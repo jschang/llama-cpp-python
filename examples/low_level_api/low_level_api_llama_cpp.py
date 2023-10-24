@@ -66,12 +66,9 @@ while remaining_tokens > 0:
             llama_cpp.llama_token_data_array(_arr, len(_arr), False))
 
         _arr = (llama_cpp.c_int * len(last_n_tokens_data))(*last_n_tokens_data)
-        llama_cpp.llama_sample_repetition_penalty(ctx, candidates_p,
+        llama_cpp.llama_sample_repetition_penalties(ctx, candidates_p,
             _arr,
-            last_n_repeat, repeat_penalty)
-        llama_cpp.llama_sample_frequency_and_presence_penalties(ctx, candidates_p,
-            _arr,
-            last_n_repeat, frequency_penalty, presence_penalty)
+            last_n_repeat, repeat_penalty, frequency_penalty, presence_penalty)
 
         llama_cpp.llama_sample_top_k(ctx, candidates_p, k=40, min_keep=1)
         llama_cpp.llama_sample_top_p(ctx, candidates_p, p=0.8, min_keep=1)

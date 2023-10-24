@@ -595,20 +595,14 @@ class Llama:
         candidates.data = candidates_data.ctypes.data_as(llama_cpp.llama_token_data_p)
         candidates.sorted = llama_cpp.c_bool(False)
         candidates.size = llama_cpp.c_size_t(n_vocab)
-        llama_cpp.llama_sample_repetition_penalty(
+        llama_cpp.llama_sample_repetition_penalties(
             ctx=self.ctx,
             last_tokens_data=last_n_tokens_data,
             last_tokens_size=last_n_tokens_size,
             candidates=llama_cpp.ctypes.byref(candidates),  # type: ignore
-            penalty=repeat_penalty,
-        )
-        llama_cpp.llama_sample_frequency_and_presence_penalties(
-            ctx=self.ctx,
-            candidates=llama_cpp.ctypes.byref(candidates),  # type: ignore
-            last_tokens_data=last_n_tokens_data,
-            last_tokens_size=last_n_tokens_size,
-            alpha_frequency=frequency_penalty,
-            alpha_presence=presence_penalty,
+            penalty_repeat=repeat_penalty,
+            penalty_freq=frequency_penalty,
+            penalty_present=presence_penalty
         )
         if not penalize_nl:
             candidates.data[self._token_nl].logit = llama_cpp.c_float(nl_logit)

@@ -4,7 +4,7 @@ from . import llama_types
 
 
 def _get_system_message(
-    messages: List[llama_types.ChatCompletionRequestMessage],
+        messages: List[llama_types.ChatCompletionRequestMessage],
 ) -> str:
     """Get the first system message."""
     for message in messages:
@@ -14,7 +14,7 @@ def _get_system_message(
 
 
 def _map_roles(
-    messages: List[llama_types.ChatCompletionRequestMessage], role_map: Dict[str, str]
+        messages: List[llama_types.ChatCompletionRequestMessage], role_map: Dict[str, str]
 ) -> List[Tuple[str, Optional[str]]]:
     """Map the message roles."""
     output: List[Tuple[str, Optional[str]]] = []
@@ -26,7 +26,7 @@ def _map_roles(
 
 
 def _format_llama2(
-    system_message: str, messages: List[Tuple[str, Optional[str]]], sep: str
+        system_message: str, messages: List[Tuple[str, Optional[str]]], sep: str
 ) -> str:
     """Format the prompt with the llama2 style."""
     ret = system_message + sep
@@ -39,7 +39,7 @@ def _format_llama2(
 
 
 def _format_add_colon_single(
-    system_message: str, messages: List[Tuple[str, Optional[str]]], sep: str
+        system_message: str, messages: List[Tuple[str, Optional[str]]], sep: str
 ) -> str:
     """Format the prompt with the add-colon-single style."""
     ret = system_message + sep
@@ -52,7 +52,7 @@ def _format_add_colon_single(
 
 
 def _format_add_colon_two(
-    system_message: str, messages: List[Tuple[str, Optional[str]]], sep: str, sep2: str
+        system_message: str, messages: List[Tuple[str, Optional[str]]], sep: str, sep2: str
 ) -> str:
     """Format the prompt with the add-colon-two style."""
     seps = [sep, sep2]
@@ -66,7 +66,7 @@ def _format_add_colon_two(
 
 
 def _format_no_colon_single(
-    system_message: str, messages: List[Tuple[str, Optional[str]]], sep: str
+        system_message: str, messages: List[Tuple[str, Optional[str]]], sep: str
 ) -> str:
     """Format the prompt with the no-colon-single style."""
     ret = system_message
@@ -79,7 +79,7 @@ def _format_no_colon_single(
 
 
 def _format_add_colon_space_single(
-    system_message: str, messages: List[Tuple[str, Optional[str]]], sep: str
+        system_message: str, messages: List[Tuple[str, Optional[str]]], sep: str
 ) -> str:
     """Format the prompt with the add-colon-space-single style."""
     ret = system_message + sep
@@ -92,7 +92,7 @@ def _format_add_colon_space_single(
 
 
 def _format_chatml(
-    system_message: str, messages: List[Tuple[str, Optional[str]]], sep: str
+        system_message: str, messages: List[Tuple[str, Optional[str]]], sep: str
 ) -> str:
     """Format the prompt with the chatml style."""
     ret = "" if system_message == "" else system_message + sep + "\n"
@@ -112,9 +112,9 @@ class ChatFormatterResponse:
 
 class ChatFormatter(Protocol):
     def __call__(
-        self,
-        messages: List[llama_types.ChatCompletionRequestMessage],
-        **kwargs: Any,
+            self,
+            messages: List[llama_types.ChatCompletionRequestMessage],
+            **kwargs: Any,
     ) -> ChatFormatterResponse:
         ...
 
@@ -141,8 +141,8 @@ def get_chat_format(name: str):
 
 @register_chat_format("llama-2")
 def format_llama2(
-    messages: List[llama_types.ChatCompletionRequestMessage],
-    **kwargs: Any,
+        messages: List[llama_types.ChatCompletionRequestMessage],
+        **kwargs: Any,
 ) -> ChatFormatterResponse:
     _system_template = "[INST] <<SYS>>\n{system_message}\n<</SYS>>\n\n"
     _roles = dict(user="[INST]", assistant="[/INST]")
@@ -157,8 +157,8 @@ def format_llama2(
 
 @register_chat_format("alpaca")
 def format_alpaca(
-    messages: List[llama_types.ChatCompletionRequestMessage],
-    **kwargs: Any,
+        messages: List[llama_types.ChatCompletionRequestMessage],
+        **kwargs: Any,
 ) -> ChatFormatterResponse:
     _roles = dict(user="### Instruction", assistant="### Response")
     _sep = "\n\n"
@@ -171,8 +171,8 @@ def format_alpaca(
 
 @register_chat_format("vicuna")
 def format(
-    messages: List[llama_types.ChatCompletionRequestMessage],
-    **kwargs: Any,
+        messages: List[llama_types.ChatCompletionRequestMessage],
+        **kwargs: Any,
 ) -> ChatFormatterResponse:
     _system_message = "A chat between a curious user and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the user's questions."
     _roles = dict(user="USER", assistant="ASSISTANT")
@@ -187,8 +187,8 @@ def format(
 
 @register_chat_format("oasst_llama")
 def format_oasst_llama(
-    messages: List[llama_types.ChatCompletionRequestMessage],
-    **kwargs: Any,
+        messages: List[llama_types.ChatCompletionRequestMessage],
+        **kwargs: Any,
 ) -> ChatFormatterResponse:
     _system_template = "[INST] <<SYS>>\n{system_message}\n<</SYS>>\n\n"
     _roles = dict(user="<|prompter|>", assistant="<|assistant|>")
@@ -203,8 +203,8 @@ def format_oasst_llama(
 
 @register_chat_format("openbuddy")
 def format_openbuddy(
-    messages: List[llama_types.ChatCompletionRequestMessage],
-    **kwargs: Any,
+        messages: List[llama_types.ChatCompletionRequestMessage],
+        **kwargs: Any,
 ) -> ChatFormatterResponse:
     _system_message = """Consider a conversation between User (a human) and Assistant (named Buddy).
 Buddy is an INTP-T, a friendly, intelligent and multilingual AI assistant, by OpenBuddy team. GitHub: https://github.com/OpenBuddy/OpenBuddy
@@ -228,8 +228,8 @@ Assistant: Hi, I'm Buddy, your AI assistant. How can I help you today?"""
 
 @register_chat_format("redpajama-incite")
 def format_redpajama_incite(
-    messages: List[llama_types.ChatCompletionRequestMessage],
-    **kwargs: Any,
+        messages: List[llama_types.ChatCompletionRequestMessage],
+        **kwargs: Any,
 ) -> ChatFormatterResponse:
     _system_message = _get_system_message(messages)
     _roles = dict(user="<human>", assistant="<bot>")
@@ -244,8 +244,8 @@ def format_redpajama_incite(
 
 @register_chat_format("snoozy")
 def format_snoozy(
-    messages: List[llama_types.ChatCompletionRequestMessage],
-    **kwargs: Any,
+        messages: List[llama_types.ChatCompletionRequestMessage],
+        **kwargs: Any,
 ) -> ChatFormatterResponse:
     system_template = "### Instruction:\n{system_message}"
     default_system_message = "The prompt below is a question to answer, a task to complete, or a conversation to respond to; decide which and write an appropriate response."
@@ -266,8 +266,8 @@ def format_snoozy(
 
 @register_chat_format("phind")
 def format_phind(
-    messages: List[llama_types.ChatCompletionRequestMessage],
-    **kwargs: Any,
+        messages: List[llama_types.ChatCompletionRequestMessage],
+        **kwargs: Any,
 ) -> ChatFormatterResponse:
     _roles = dict(user="### User Message", assistant="### Assistant")
     _sep = "\n\n"
@@ -280,8 +280,8 @@ def format_phind(
 
 @register_chat_format("open-orca")
 def format_open_orca(
-    messages: List[llama_types.ChatCompletionRequestMessage],
-    **kwargs: Any,
+        messages: List[llama_types.ChatCompletionRequestMessage],
+        **kwargs: Any,
 ) -> ChatFormatterResponse:
     system_template = "{system_message}"
     system_message = (
@@ -307,8 +307,8 @@ def format_open_orca(
 
 @register_chat_format("chatml")
 def format_chatml(
-    messages: List[llama_types.ChatCompletionRequestMessage],
-    **kwargs: Any,
+        messages: List[llama_types.ChatCompletionRequestMessage],
+        **kwargs: Any,
 ) -> ChatFormatterResponse:
     system_template = """<|im_start|>system
 {system_message}"""
@@ -319,4 +319,4 @@ def format_chatml(
     _messages = _map_roles(messages, _roles)
     _messages.append((_roles["assistant"], None))
     _prompt = _format_chatml(system_message, _messages, _sep)
-    return ChatFormatterResponse(prompt=_prompt)
+    return ChatFormatterResponse(prompt=_prompt, stop=_sep)
